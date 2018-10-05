@@ -1,20 +1,93 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div style="padding:0 15px 0 0">
+    <div class="row">
+        <div class="col-lg-3">
+          <div class="response">
+            <h3 class="grey">History</h3>
+            <hr>
+            <div class="list" *ngFor="let h of history">
+              <div><span class="requestMethod">{{h.method}}</span> <span>{{h.url}}</span></div>
+              <div class="status" [ngStyle]="h.statusCode == 200?{'color':'green'}:{'color':'red'}">{{h.status}}</div>
+            </div>
 
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div style="margin-top:10px">
+              <a target="_blank" href="http://getdevapi.eskor.com.ng/docs/index.html" class="btn btn-lg btn-primary"> 
+               <i class="fa fa-book"></i> VIEW DOCUMENTATION</a>
+          </div>
+          <div class="main_body">
+            <div class="row">
+              <div class="col-lg-2">
+                <div class="form-group">
+                  <label>METHOD</label>
+                  <select class="form-control" [(ngModel)]="method" (change)="checkForm()">
+                    <option value="get">GET</option>
+                    <option value="post">POST</option>
+                    <option value="delete">DELETE</option>
+                    <option value="put">PUT</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <div class="form-group">
+                  <label>SCHEME :// HOST [ ":" PORT ] [ PATH [ "?" QUERY ]]</label>
+                  <input type="text" [(ngModel)]="baseUrl" name="" class="form-control">
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="form-group">
+                  <button (click)="sendRequest()" class="btn btn-success sendBtn full-width"><i class="fa fa-send"></i> Send</button>
+                </div>
+              </div>
+            </div>
+      
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label>HEADER</label>
+                  <input type="text" name="header" [(ngModel)]="header" placeholder="Enter Authorization token" class="form-control">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                 <LABEL>BODY</LABEL>
+                 <div class="grey" *ngIf="!showForm">
+                   Use Query Param
+                 </div>
+                <div *ngIf="showForm">
+                    <div class="form-group" *ngFor="let s of formData">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <input type="text" name="" [(ngModel)]="s.name" placeholder="name" class="form-control">
+                          </div>
+                          <div class="col-lg-7">
+                            <input type="text" name="" [(ngModel)]="s.value" placeholder="value" class="form-control">
+                          </div>
+                          <div class="col-lg-1">
+                              <button (click)="delete(s)" class="btn btn-xs close-btn">x</button>
+                          </div>
+                        </div>
+                      </div>
+                    <button (click)="addForm()" class="btn btn-default btn-xs"><i class="fa fa-plus"></i> Add form parameter</button>
+                </div>
+                
+      
+              </div>
+            </div>
+      
+          </div>
+      
+          <div class="main_body grey">
+            <h3 style="margin:0">Response</h3>
+            <small *ngIf="!showResponse">Not available, a request has not been sent yet.</small>
+            <div *ngIf="showResponse">
+               <div class="panel-body title" [ngStyle]="response.status == 200?{'background': '#4CAF50'}:{'background':'#F44336'}"> Status {{response.status}}</div>
+               <pre style="font-size: 0.75em;color: #2b2bc1;height:33vh;overflow:scroll">
+                  {{prettyOutput}}
+              </pre>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+</div>
